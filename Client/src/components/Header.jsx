@@ -1,4 +1,4 @@
-import logo from '../../assets/sagit_logo_red.png'
+import logo from '../assets/sagit_logo_red.png'
 
 export default function Header() {
   return (
