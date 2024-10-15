@@ -27,8 +27,9 @@ export default function Users() {
             Entrar
           </button>
           <div className='flex justify-between'>
-            <p>Para se cadastrar fale conosco</p>
-            <a href="/contact" className="text-blue-500 hover:underline">Clique aqui</a>
+            <p>Para se cadastrar
+              <a href="/contact" className="text-blue-500 hover:underline"> nos mande uma mensagem</a>
+            </p>
           </div>
         </form>
       </div>
