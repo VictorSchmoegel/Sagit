@@ -6,7 +6,7 @@ export default function Login() {
       <img
         src={imageFundo}
         alt="trabalhadores fazendo manutenção em um vagão de trem"
-        className='w-full h-screen object-cover'
+        className='w-full h-screen object-cover opacity-80'
         />
     </main>
   )
