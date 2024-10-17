@@ -13,6 +13,7 @@ import EntregaDeNovos from "./pages/EntregaDeNovos";
 import Klabin from "./pages/Klabin";
 import Imperatriz from "./pages/Imperatriz";
 import PedroLeopoldo from "./pages/PedroLeopoldo";
+import Projetos from "./pages/Projetos";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/klabin" element={<Klabin />} />
         <Route path="/imperatriz" element={<Imperatriz />} />
         <Route path="/pedroleopoldo" element={<PedroLeopoldo />} />
+        <Route path="/projetos" element={<Projetos />} />
       </Routes>
     </BrowserRouter>
   )

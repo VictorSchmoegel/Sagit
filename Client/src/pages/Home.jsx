@@ -1,6 +1,6 @@
 import { FaEye } from "react-icons/fa";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [search, setSearch] = useState('');
@@ -34,9 +34,11 @@ export default function Home() {
                   <option value="pedroleopoldo">Pedro Leopoldo</option>
                 </select>
               </li>
-              <li className="cursor-pointer text-white">
-                CRIAR PROJETO
-              </li>
+              <Link to='/projetos'>
+                <li className="cursor-pointer text-white">
+                  CRIAR PROJETO
+                </li>
+              </Link>
               <input
                 type='search'
                 placeholder='Buscar colaborador'
