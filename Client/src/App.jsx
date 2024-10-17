@@ -6,6 +6,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Users from "./pages/Users";
 import Home from "./pages/Home";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/users" element={<Users />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
       </Routes>
     </BrowserRouter>
   )
