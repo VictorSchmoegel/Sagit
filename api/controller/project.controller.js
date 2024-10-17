@@ -23,7 +23,20 @@ const getAllProjects = async (req, res, next) => {
   }
 };
 
+const getProjectById = async (req, res, next) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ message: 'Projeto não encontrado' });
+    }
+    res.status(200).json(project);
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao buscar projeto'));
+  }
+};
+
 module.exports = {
   createProject,
   getAllProjects,
+  getProjectById,
 };

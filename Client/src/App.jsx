@@ -14,6 +14,7 @@ import Klabin from "./pages/Klabin";
 import Imperatriz from "./pages/Imperatriz";
 import PedroLeopoldo from "./pages/PedroLeopoldo";
 import Projetos from "./pages/Projetos";
+import ProjectPage from "./pages/ProjectPage";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/imperatriz" element={<Imperatriz />} />
         <Route path="/pedroleopoldo" element={<PedroLeopoldo />} />
         <Route path="/projetos" element={<Projetos />} />
+        <Route path="/projects/:id" element={<ProjectPage />} />
       </Routes>
     </BrowserRouter>
   )
