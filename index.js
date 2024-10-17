@@ -4,6 +4,7 @@ require('dotenv').config()
 
 const userRoute = require('./api/routes/user.route');
 const authRoute = require('./api/routes/auth.route');
+const projectRoute = require('./api/routes/project.route');
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   console.log('Connected to MongoDB');
@@ -21,6 +22,7 @@ app.listen(3000, () => {
 
 app.use('/api', userRoute);
 app.use('/api', authRoute);
+app.use('/api', projectRoute);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
