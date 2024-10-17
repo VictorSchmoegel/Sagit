@@ -64,14 +64,28 @@ export default function Home() {
                 <td className='py-2 px-4 border'>01234567891</td>
                 <td className='py-2 px-4 border'>1594562</td>
                 <td className='py-2 px-4 border'><FaEye /></td>
-                <td className='py-2 px-4 border'>EXCLUIR</td>
+                <td className="py-2 px-4 border">
+                  <button
+                    type="button"
+                    className="text-red-500"
+                  >
+                    Excluir
+                  </button>
+                </td>
               </tr>
               <tr>
                 <td className='py-2 px-4 border'>Marcus</td>
                 <td className='py-2 px-4 border'>123456789321</td>
                 <td className='py-2 px-4 border'>9632587</td>
                 <td className='py-2 px-4 border'><FaEye /></td>
-                <td className='py-2 px-4 border'>EXCLUIR</td>
+                <td className="py-2 px-4 border">
+                  <button
+                    type="button"
+                    className="text-red-500"
+                  >
+                    Excluir
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
