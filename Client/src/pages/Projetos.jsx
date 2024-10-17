@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createProjectStart, createProjectSuccess, createProjectFailure } from '../redux/userSlice';
+import { createProjectStart, createProjectSuccess, createProjectFailure } from '../redux/projectsSlice';
 
 export default function Projetos() {
   const [formData, setFormData] = useState({})
@@ -28,7 +28,6 @@ export default function Projetos() {
       });
       const data = await res.json();
       console.log(data);
-      dispatch(createProjectSuccess(data));
       if (data.success === false) {
         dispatch(createProjectFailure(data.message));
         return

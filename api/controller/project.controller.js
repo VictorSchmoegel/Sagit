@@ -14,6 +14,16 @@ const createProject = async (req, res, next) => {
   }
 };
 
+const getAllProjects = async (req, res, next) => {
+  try {
+    const projects = await Project.find();
+    res.status(200).json(projects);
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao buscar projetos'));
+  }
+};
+
 module.exports = {
   createProject,
+  getAllProjects,
 };
