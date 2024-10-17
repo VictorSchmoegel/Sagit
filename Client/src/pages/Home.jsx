@@ -48,7 +48,7 @@ export default function Home() {
               </li>
               <Link to='/projetos'>
                 <li className="cursor-pointer text-white">
-                  CRIAR PROJETO
+                  GERENCIAR PROJETOS
                 </li>
               </Link>
             </ul>
