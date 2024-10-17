@@ -5,6 +5,7 @@ import Landing from "./pages/Landing"
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Users from "./pages/Users";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </BrowserRouter>
   )

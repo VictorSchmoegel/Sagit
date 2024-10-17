@@ -8,29 +8,18 @@ const signIn = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(400).json({ message: 'Usuário não encontrado' });
-    }
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: 'Senha incorreta' });
-    }
-    const token = jwt.sign(
-      { userId: user._id, username: user.username },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-    res.status(200).json({
-      message: 'Autenticação bem-sucedida',
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-      }
-    });
+    if (!user) return next(errorHandler(404, 'Usuário não encontrado'));
+    const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+    if (!isPasswordCorrect) return next(errorHandler(401, 'Credenciais inválidas'));
+    const token = jwt.sign({ userId: user._id, usename: user.username }, process.env.JWT_SECRET);
+    const { password: userPassword, ...rest } = user._doc;
+    res
+      .cookie('token', token, { httpOnly: true })
+      .status(200)
+      .json(rest);
   }
   catch (error) {
-    next(errorHandler(500, 'Erro ao autenticar usuário'));
+    next(error);
   }
 };
 
