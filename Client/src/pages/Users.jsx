@@ -1,12 +1,14 @@
 import imagemFundo from '../assets/imagem1.png'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from '../redux/userSlice';
 
 export default function Users() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setFormData({
@@ -18,7 +20,7 @@ export default function Users() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch('/api/signin', {
         method: 'POST',
         headers: {
@@ -28,15 +30,15 @@ export default function Users() {
       });
       const data = await res.json();
       console.log(data);
-      setLoading(false);
+      dispatch(signInSuccess(data));
       if (data.success === false) {
-        setError(data.message);
-        setLoading(false);
+        dispatch(signInFailure(data.message));
         return
       }
+      dispatch(signInSuccess(data));
       navigate('/home');
     } catch (error) {
-      setError('Algo deu errado, tente novamente mais tarde');
+      dispatch(signInFailure(error));
       console.log(error);
     }
   }
