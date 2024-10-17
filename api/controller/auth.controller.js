@@ -1,9 +1,10 @@
 const User = require('../model/user.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const errorHandler = require('../utils/error');
 require('dotenv').config();
 
-const signIn = async (req, res) => {
+const signIn = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
@@ -29,7 +30,7 @@ const signIn = async (req, res) => {
     });
   }
   catch (error) {
-    res.status(500).json({ message: 'Erro ao realizar login', error: error.message });
+    next(errorHandler(500, 'Erro ao autenticar usuário'));
   }
 };
 

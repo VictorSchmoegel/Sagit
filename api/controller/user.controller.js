@@ -1,7 +1,8 @@
 const User = require('../model/user.model');
 const bcrypt = require('bcrypt');
+const errorHandler = require('../utils/error');
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const existingUser = await User.findOne({ username });
@@ -16,7 +17,7 @@ const createUser = async (req, res) => {
     const savedUser = await newUser.save();
     res.status(201).json({ message: 'Usuário criado com sucesso', userId: savedUser._id });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao criar usuário', error: error.message });
+    next(errorHandler(500, 'Erro ao criar usuário'));
   }
 };
 
