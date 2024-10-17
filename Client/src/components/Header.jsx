@@ -10,6 +10,9 @@ export default function Header() {
         </Link>
         <form className="bg-slate-100 p-3 rounded-lg flex items-center">
           <ul className="flex gap-4">
+          <Link to='/home'>
+              <li className="hover:underline cursor-pointer">Home</li>
+            </Link>
             <Link to='/contact'>
               <li className="hover:underline cursor-pointer">Contato</li>
             </Link>
