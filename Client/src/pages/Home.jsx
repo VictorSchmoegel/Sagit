@@ -1,12 +1,20 @@
 import { FaEye } from "react-icons/fa";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
+  };
+
+  const handleSelectChange = (event) => {
+    const selectedProject = event.target.value;
+    if (selectedProject !== 'PROJETOS') {
+      navigate(`/${selectedProject}`);
+    }
   };
 
   return (
@@ -16,16 +24,14 @@ export default function Home() {
           <nav className="w-full bg-slate-600">
             <ul className="flex gap-4 justify-around border p-3">
               <li>
-                <select className="cursor-pointer">
-                  <option>PROJETOS</option>
-                  <Link to=''>
-                    <option>Araraquara</option>
-                  </Link>
-                  <option>Divinóplis</option>
-                  <option>Entrega de Novos</option>
-                  <option>Klabin</option>
-                  <option>Imperatriz</option>
-                  <option>Pedro Leopoldo</option>
+                <select className="cursor-pointer" onChange={handleSelectChange}>
+                  <option value="PROJETOS">PROJETOS</option>
+                  <option value="araraquara">Araraquara</option>
+                  <option value="divinopolis">Divinópolis</option>
+                  <option value="entregadenovos">Entrega de Novos</option>
+                  <option value="klabin">Klabin</option>
+                  <option value="imperatriz">Imperatriz</option>
+                  <option value="pedroleopoldo">Pedro Leopoldo</option>
                 </select>
               </li>
               <li className="cursor-pointer text-white">
