@@ -31,7 +31,28 @@ const getColabsByProject = async (req, res, next) => {
   }
 }
 
+const deleteColab = async (req, res, next) => {
+  const { colabId } = req.params;
+  console.log("Deleting collaborator with ID:", colabId); // Log para verificar o ID
+
+  try {
+    const colab = await Colab.findById(colabId);
+    if (!colab) {
+      console.log("Collaborator not found"); // Log para verificar se o colaborador foi encontrado
+      return next(errorHandler(404, 'Colaborador não encontrado'));
+    }
+
+    await colab.remove();
+    console.log("Collaborator deleted successfully"); // Log para confirmar a exclusão
+    return res.status(200).json({ message: 'Colaborador deletado com sucesso' });
+  } catch (error) {
+    console.error("Error deleting collaborator:", error); // Log do erro
+    next(errorHandler(500, 'Erro ao deletar colaborador'));
+  }
+}
+
 module.exports = {
   createColab,
   getColabsByProject,
+  deleteColab
 };

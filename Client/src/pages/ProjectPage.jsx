@@ -77,9 +77,26 @@ const ProjectPage = () => {
     // Redirecionar para a página de visualização ou executar uma ação
   };
 
-  const handleDemobilizeCollaborator = (collaboratorId) => {
-    console.log('Demobilizing collaborator:', collaboratorId);
-    // Lógica para desmobilizar o colaborador
+  const handleDemobilizeCollaborator = async (collaboratorId) => {
+    if (window.confirm('Tem certeza que deseja desmobilizar o colaborador?')) {
+      try {
+        const res = await fetch(`/api/projects/${id}/deleteColab/${collaboratorId}`, {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+  
+        if (res.ok) {
+          setSuccessMessage(data.message);
+          // Remove o colaborador do estado após a exclusão
+          dispatch(fetchColabsSuccess(colabs.filter(colab => colab._id !== collaboratorId)));
+        } else {
+          setSuccessMessage(null);
+          console.error('Falha ao desmobilizar colaborador:', data.message);
+        }
+      } catch (error) {
+        console.error('Erro ao desmobilizar colaborador:', error);
+      }
+    }
   };
 
   return (
@@ -94,7 +111,7 @@ const ProjectPage = () => {
               <div>
                 <h2 className="text-start text-2xl font-bold mb-2">Cadastrar Colaborador</h2>
                 <p className='text-start font-semibold'>
-                  Projeto <strong>{project.name}</strong> conta com um total de <strong>{colabs.length}</strong> ativos
+                  Projeto <strong>{project.name}</strong> conta com um total de <strong>{colabs.length}</strong> colaboradores ativos
                 </p>
               </div>
 
