@@ -6,9 +6,13 @@ const createColab = async (req, res, next) => {
   const { projectId } = req.params;
   try {
     const existingColab = await Colab.findOne({ cpf, rg });
-    if (existingColab) {
-      return res.status(400).json('colaborador já cadastrado');
-    }
+    const validCpf = await Colab.findOne({ cpf });
+    const validRg = await Colab.findOne({ rg });
+    if (existingColab) return next(errorHandler(400, 'Colaborador já cadastrado'));
+    if (validCpf) return next(errorHandler(400, 'CPF já cadastrado'));
+    if (validRg) return next(errorHandler(400, 'RG já cadastrado'));
+    if (cpf.length < 11) return next(errorHandler(400, 'CPF inválido'));
+    if (rg.length < 5) return next(errorHandler(400, 'RG inválido'));
     const colab = new Colab({ name, cpf, rg, location: projectId });
     await colab.save();
     return res.status(201).json({ message: 'Colaborador cadastrado com sucesso', colabId: colab._id });
