@@ -4,7 +4,7 @@ const router = express.Router();
 
 const colabController = require('../controller/colab.controller');
 
-router.post('/createColab', colabController.createColab);
-router.get('/getColabById/:colabId', colabController.getColabById);
+router.post('/projects/:projectId/createColab', colabController.createColab);
+router.get('/projects/:projectId/colabs', colabController.getColabsByProject);
 
 module.exports = router;

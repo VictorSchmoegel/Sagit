@@ -7,12 +7,6 @@ import About from "./pages/About";
 import Users from "./pages/Users";
 import Home from "./pages/Home";
 import PrivateRoute from "./components/PrivateRoute";
-import Araraquara from "./pages/Araraquara";
-import Divinopolis from "./pages/Divinopolis";
-import EntregaDeNovos from "./pages/EntregaDeNovos";
-import Klabin from "./pages/Klabin";
-import Imperatriz from "./pages/Imperatriz";
-import PedroLeopoldo from "./pages/PedroLeopoldo";
 import Projetos from "./pages/Projetos";
 import ProjectPage from "./pages/ProjectPage";
 
@@ -26,12 +20,6 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/users" element={<Users />} />
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-        <Route path="/araraquara" element={<Araraquara />} />
-        <Route path="/divinopolis" element={<Divinopolis />} />
-        <Route path="/entregadenovos" element={<EntregaDeNovos />} /> 
-        <Route path="/klabin" element={<Klabin />} />
-        <Route path="/imperatriz" element={<Imperatriz />} />
-        <Route path="/pedroleopoldo" element={<PedroLeopoldo />} />
         <Route path="/projetos" element={<Projetos />} />
         <Route path="/projects/:id" element={<ProjectPage />} />
       </Routes>
