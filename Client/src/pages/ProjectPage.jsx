@@ -12,9 +12,10 @@ import {
 
 const ProjectPage = () => {
   const { id } = useParams();
-  const { colabs, loading, error } = useSelector((state) => state.colabs);
+  const { colabs, error } = useSelector((state) => state.colabs);
   const [project, setProject] = useState(null);
   const [newColab, setNewColab] = useState({ name: '', cpf: '', rg: '', location: id });
+  const [successMessage, setSuccessMessage] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,13 +58,17 @@ const ProjectPage = () => {
       });
       const data = await res.json();
       dispatch(createColabSuccess(data.message));
+      setSuccessMessage(data.message);
       if (data.success === false) {
         dispatch(createColabFailure(data.message));
         return;
       }
+      dispatch(createColabSuccess(data.message));
+      dispatch(createColabFailure(null));
       setNewColab({ name: '', cpf: '', rg: '', location: id });
     } catch (error) {
-      dispatch(createColabFailure(error.message));
+      dispatch(createColabFailure(error));
+
     }
   };
 
@@ -128,6 +133,7 @@ const ProjectPage = () => {
                   Cadastrar
                 </button>
                 {error && <p className='text-red-500'>{error}</p>}
+                {successMessage && <p className='text-green-500'>{successMessage}</p>}
               </div>
             </form>
 
@@ -172,7 +178,7 @@ const ProjectPage = () => {
             </div>
           </>
         ) : (
-          <p>Loading project...</p>
+          <p>Carregando...</p>
         )}
       </div>
     </main>
