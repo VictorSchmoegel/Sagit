@@ -13,7 +13,7 @@ const ColabSchema = mongoose.Schema({
     trim: true,
     minlength: 11
   },
-  email: {
+  rg: {
     type: String,
     required: true,
     trim: true,
