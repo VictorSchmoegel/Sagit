@@ -5,5 +5,6 @@ const router = express.Router();
 const colabController = require('../controller/colab.controller');
 
 router.post('/createColab', colabController.createColab);
+router.get('/getColabById/:colabId', colabController.getColabById);
 
 module.exports = router;

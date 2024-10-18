@@ -1,4 +1,5 @@
 const Colab = require('../model/colab.model');
+const errorHandler = require('../utils/error');
 
 const createColab = async (req, res, next) => {
   const { name, cpf, rg, location } = req.body;
@@ -15,6 +16,20 @@ const createColab = async (req, res, next) => {
   }
 };
 
+const getColabById = async (req, res, next) => {
+  const { colabId } = req.params;
+  try {
+    const existingColab = await Colab.findById(colabId);
+    if (!existingColab) {
+      return res.status(404).json('Colaborador não encontrado');
+    }
+    return res.status(200).json(existingColab);
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao buscar colaborador'));
+  }
+}
+
 module.exports = {
-  createColab
+  createColab,
+  getColabById,
 };
