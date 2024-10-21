@@ -31,6 +31,15 @@ const getColabsByProject = async (req, res, next) => {
   }
 }
 
+const getAllColabs = async (req, res, next) => {
+  try {
+    const colabs = await Colab.find();
+    return res.status(200).json(colabs);
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao buscar colaboradores'));
+  }
+};
+
 const deleteColab = async (req, res, next) => {
   const { colabId } = req.params;
   console.log("Deleting collaborator with ID:", colabId); // Log para verificar o ID
@@ -54,5 +63,6 @@ const deleteColab = async (req, res, next) => {
 module.exports = {
   createColab,
   getColabsByProject,
-  deleteColab
+  deleteColab,
+  getAllColabs,
 };
