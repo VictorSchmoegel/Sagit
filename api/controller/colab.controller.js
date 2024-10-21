@@ -42,8 +42,8 @@ const deleteColab = async (req, res, next) => {
       return next(errorHandler(404, 'Colaborador não encontrado'));
     }
 
-    await colab.remove();
-    console.log("Collaborator deleted successfully"); // Log para confirmar a exclusão
+    await colab.deleteOne();
+    console.log("Colaborador deletado com sucesso"); // Log para confirmar a exclusão
     return res.status(200).json({ message: 'Colaborador deletado com sucesso' });
   } catch (error) {
     console.error("Error deleting collaborator:", error); // Log do erro
