@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   fetchColabsStart,
   fetchColabsSuccess,
@@ -16,6 +17,7 @@ const ProjectPage = () => {
   const [project, setProject] = useState(null);
   const [newColab, setNewColab] = useState({ name: '', cpf: '', rg: '', location: id });
   const [successMessage, setSuccessMessage] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -73,8 +75,7 @@ const ProjectPage = () => {
   };
 
   const handleViewCollaborator = (collaboratorId) => {
-    console.log('Viewing collaborator:', collaboratorId);
-    // Redirecionar para a página de visualização ou executar uma ação
+    navigate(`/colabs/${collaboratorId}`);
   };
 
   const handleDemobilizeCollaborator = async (collaboratorId) => {

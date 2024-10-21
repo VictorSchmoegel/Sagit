@@ -60,9 +60,21 @@ const deleteColab = async (req, res, next) => {
   }
 }
 
+const getColabById = async (req, res, next) => {
+  const { colabId } = req.params;
+  try {
+    const colab = await Colab.findById(colabId);
+    if (!colab) return next(errorHandler(404, 'Colaborador não encontrado'));
+    return res.status(200).json(colab);
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao buscar colaborador'));
+  }
+};
+
 module.exports = {
   createColab,
   getColabsByProject,
   deleteColab,
   getAllColabs,
+  getColabById,
 };

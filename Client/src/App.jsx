@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import PrivateRoute from "./components/PrivateRoute";
 import Projetos from "./pages/Projetos";
 import ProjectPage from "./pages/ProjectPage";
+import ColabPage from "./pages/ColabPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/projetos" element={<Projetos />} />
         <Route path="/projects/:id" element={<ProjectPage />} />
+        <Route path="/colabs/:colabId" element={<ColabPage />} />
       </Routes>
     </BrowserRouter>
   )
