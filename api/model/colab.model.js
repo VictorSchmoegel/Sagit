@@ -25,6 +25,10 @@ const ColabSchema = mongoose.Schema({
     trim: true,
     minlength: 3
   },
+  pdfFiles: [{
+    filePath: String,
+    expirationDate: Date,
+  }]
 }, { timestamps: true });
 
 const Colab = mongoose.model('Colab', ColabSchema);
