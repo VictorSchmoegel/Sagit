@@ -45,6 +45,7 @@ const getPdfs = async (req, res, next) => {
 
     const pdfs = colab.pdfFiles.map(file => {
       return {
+        colabName: colab.name,
         _id: file._id,
         filename: file.filename,
         pdfName: file.pdfName,
@@ -108,6 +109,7 @@ const getAllPdfs = async (req, res, next) => {
     colabs.forEach(colab => {
       pdfs = pdfs.concat(colab.pdfFiles.map(file => {
         return {
+          colabName: colab.name,
           colabId: colab._id,
           _id: file._id,
           filename: file.filename,
