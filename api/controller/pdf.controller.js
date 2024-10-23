@@ -45,10 +45,11 @@ const getPdfs = async (req, res, next) => {
 
     const pdfs = colab.pdfFiles.map(file => {
       return {
+        _id: file._id,
         filename: file.filename,
         pdfName: file.pdfName,
         expirationDate: file.expirationDate,
-        url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`  // Criar URL de acesso ao PDF
+        url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`
       };
     });
 

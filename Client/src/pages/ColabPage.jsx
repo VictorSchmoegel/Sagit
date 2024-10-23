@@ -6,6 +6,11 @@ import {
   fetchColabsSuccess,
   fetchColabsFailure,
 } from '../redux/colabSlice';
+import {
+  deletePdfStart,
+  deletePdfSuccess,
+  deletePdfFailure,
+} from '../redux/pdfSlice';
 
 export default function ColabPage() {
   const { colabs } = useSelector((state) => state.colabs);
@@ -16,6 +21,7 @@ export default function ColabPage() {
   const [pdfName, setPdfName] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchColabs = async () => {
@@ -36,6 +42,7 @@ export default function ColabPage() {
       try {
         const res = await fetch(`/api/colabs/${colabId}/pdf-files`);
         const data = await res.json();
+        console.log(data);
         setPdfs(data.pdfs);
       } catch (error) {
         console.error(error);
@@ -54,6 +61,27 @@ export default function ColabPage() {
 
   const handleNameChange = (e) => {
     setPdfName(e.target.value);
+  };
+
+  const handleRemovePdf = async (pdfID) => {
+    if (window.confirm('Deseja remover este PDF?')) {
+      dispatch(deletePdfStart());
+      try {
+        const res = await fetch(`/api/colabs/${colabId}/delete-pdf/${pdfID}`, {
+          method: 'DELETE',
+        });
+        if (res.ok) {
+          dispatch(deletePdfSuccess(pdfID));
+          setPdfs(pdfs.filter((pdf) => pdf._id !== pdfID));
+          setSuccessMessage('PDF removido com sucesso!');
+        } else {
+          dispatch(deletePdfFailure('Falha ao remover o PDF'));
+        }
+      } catch (error) {
+        dispatch(deletePdfFailure('Erro ao remover o PDF'));
+        console.error(error);
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -83,6 +111,7 @@ export default function ColabPage() {
         setUploadStatus('Falha no envio do arquivo.');
       }
     } catch (error) {
+      console.error(error);
       setUploadStatus('Erro ao enviar o arquivo.');
     }
   };
@@ -173,6 +202,12 @@ export default function ColabPage() {
                   <li key={index} className="flex justify-between items-center">
                     <p className="text-gray-800">Nome: {pdf.pdfName}</p>
                     <p className="text-gray-600">Validade: {new Date(pdf.expirationDate).toLocaleDateString()}</p>
+                    <button
+                      onClick={() => handleRemovePdf(pdf._id)}
+                      className="text-red-500"
+                    >
+                      Remover
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -180,6 +215,7 @@ export default function ColabPage() {
           ) : (
             <p className="text-center text-gray-500 mt-4">Nenhum PDF enviado.</p>
           )}
+          {successMessage && <p className="text-green-500 text-center mt-4">{successMessage}</p>}
         </div>
       </div>
     </main>

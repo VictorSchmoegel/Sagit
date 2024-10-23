@@ -31,6 +31,16 @@ const pdfSlice = createSlice({
     uploadPdfSuccess: (state, action) => {
       state.pdf.push(action.payload);
     },
+    deletePdfStart: (state) => {
+      state.loading = true;
+    },
+    deletePdfFailure: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
+    deletePdfSuccess: (state, action) => {
+      state.pdf = state.pdf.filter((pdf) => pdf._id !== action.payload);
+    },
   }
 });
 
@@ -41,6 +51,9 @@ export const {
   uploadPdfStart,
   uploadPdfFailure,
   uploadPdfSuccess,
+  deletePdfStart,
+  deletePdfFailure,
+  deletePdfSuccess,
 } = pdfSlice.actions;
 
 export default pdfSlice.reducer;
