@@ -112,7 +112,7 @@ const ProjectPage = () => {
               <div>
                 <h2 className="text-start text-2xl font-bold mb-2">Cadastrar Colaborador</h2>
                 <p className='text-start font-semibold'>
-                  Projeto <strong>{project.name}</strong> conta com um total de <strong>{colabs.length}</strong> colaboradores ativos
+                  Projeto <strong>{project.name}</strong> conta com o total de <strong>{colabs.length}</strong> colaboradores ativos
                 </p>
               </div>
 

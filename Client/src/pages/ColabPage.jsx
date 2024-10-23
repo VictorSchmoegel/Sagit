@@ -41,7 +41,7 @@ export default function ColabPage() {
       }
     };
     fetchPdf();
-  },[dispatch, colabId]);
+  }, [dispatch, colabId]);
 
   const handleFileChange = (e) => {
     setPdfFile(e.target.files[0]);
@@ -145,22 +145,22 @@ export default function ColabPage() {
           )}
         </form>
         <div>
-        {pdfs.length > 0 ? (
-            <div className="mt-8">
+          {pdfs ? (
+            <div className='mt-8'>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                Arquivos PDF
+                Documentos
               </h2>
               <ul className="space-y-4">
                 {pdfs.map((pdf) => (
-                  <li key={pdf.filename} className="flex justify-between">
-                    <span className="text-gray-800">{pdf.filename}</span>
-                    <span className="text-gray-800">{new Date(pdf.expirationDate).toLocaleDateString()}</span>
+                  <li key={pdf._id} className="flex justify-between items-center">
+                    <p className="text-gray-800">Nome: {pdf.filename}</p>
+                    <p className="text-gray-600">Validade: {new Date(pdf.expirationDate).toLocaleDateString()}</p>
                   </li>
                 ))}
               </ul>
             </div>
           ) : (
-            <p className="text-center text-gray-500 mt-8">Nenhum arquivo PDF enviado.</p>
+            <p className="text-center text-gray-500 mt-4">Nenhum PDF enviado.</p>
           )}
         </div>
       </div>

@@ -31,12 +31,16 @@ export default function Home() {
       try {
         const res = await fetch('/api/colabs');
         const data = await res.json();
+        console.log('Colabs data:', data);
         dispatch(fetchColabsSuccess(data));
         console.log(data)
       } catch (error) {
         dispatch(fetchColabsFailure(error));
       }
     };
+    if (!Array.isArray(colabs) || colabs.length === 0) {
+      fetchColabs();
+    }
     fetchColabs();
   }, [dispatch]);
 
@@ -72,7 +76,7 @@ export default function Home() {
           </nav>
           <section>
             <div className="border p-4 my-2">
-            <h1 className="text-3xl text-center p-2">Colaboradores</h1>
+              <h1 className="text-3xl text-center p-2">Colaboradores</h1>
               <table className="min-w-full bg-white shadow-md rounded-lg mt-5">
                 <thead>
                   <tr>
@@ -83,27 +87,31 @@ export default function Home() {
                     <th className="px-4 py-2 border">DESMOBILIZAR</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {colabs.map((colab) => (
+                {Array.isArray(colabs) && colabs.length > 0 ? (
+                  colabs.map((colab) => (
                     <tr key={colab._id}>
-                      <td className="px-4 py-2 border">{colab.name}</td>
-                      <td className="px-4 py-2 border">{colab.cpf}</td>
-                      <td className="px-4 py-2 border">{colab.rg}</td>
-                      <td className="px-4 py-2 border">
+                      <td className="px-4 py-2 border text-start">{colab.name}</td>
+                      <td className="px-4 py-2 border text-center">{colab.cpf}</td>
+                      <td className="px-4 py-2 border text-center">{colab.rg}</td>
+                      <td className="px-4 py-2 border text-center">
                         <Link to={`/colabs/${colab._id}`}>
                           <button className="bg-blue-500 text-white px-3 py-2 rounded">
                             Visualizar
                           </button>
                         </Link>
                       </td>
-                      <td className="px-4 py-2 border">
+                      <td className="px-4 py-2 border text-center">
                         <button className="bg-red-500 text-white px-3 py-2 rounded">
                           Desmobilizar
                         </button>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
+                  ))
+                ) : (
+                  <div>
+                    <p colSpan="5" className="text-center px-4 py-2 border">Nenhum colaborador encontrado</p>
+                  </div>
+                )}
               </table>
             </div>
           </section>
