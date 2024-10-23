@@ -126,10 +126,37 @@ const getAllPdfs = async (req, res, next) => {
   }
 };
 
+const updatePdf = async (req, res, next) => {
+  const { colabId, pdfID } = req.params;
+  const { expirationDate, pdfName } = req.body;
+
+  if (!req.file) return next(errorHandler(400, 'Nenhum arquivo enviado'));
+
+  try {
+    const colab = await Colab.findById(colabId);
+    if (!colab) return next(errorHandler(404, 'Colaborador não encontrado'));
+    const pdf = colab.pdfFiles.id(pdfID);
+    if (!pdf) return next(errorHandler(404, 'PDF não encontrado'));
+    const oldPdfPath = `uploads/${pdf.filename}`;
+    if (fs.existsSync(oldPdfPath)) {
+      fs.unlinkSync(oldPdfPath);
+    }
+    pdf.filename = req.file.filename;
+    pdf.pdfName = pdfName || req.file.originalname;
+    pdf.expirationDate = new Date(expirationDate);
+
+    await colab.save();
+    return res.status(200).json({ message: 'PDF atualizado com sucesso' });
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao atualizar PDF'));
+  }
+};
+
 module.exports = {
   uploadPdf,
   getPdfs,
   getPdfById,
   deletePdfById,
-  getAllPdfs
+  getAllPdfs,
+  updatePdf
 };

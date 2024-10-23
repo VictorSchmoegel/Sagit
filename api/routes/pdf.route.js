@@ -8,5 +8,6 @@ router.get('/colabs/:colabId/pdf-files', pdfController.getPdfs);
 router.get('/colabs/:colabId/pdf-files/:pdfID', pdfController.getPdfById);
 router.get('/pdfs', pdfController.getAllPdfs);
 router.delete('/colabs/:colabId/delete-pdf/:pdfID', pdfController.deletePdfById);
+router.put('/colabs/:colabId/update/:pdfID', upload.single('pdfFile'), pdfController.updatePdf);
 
 module.exports = router;
