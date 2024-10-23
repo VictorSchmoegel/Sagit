@@ -58,7 +58,47 @@ const getPdfs = async (req, res, next) => {
   }
 };
 
+const getPdfById = async (req, res, next) => {
+  const { colabId, pdfID } = req.params;
+
+  try {
+    const colab = await Colab.findById(colabId);
+    if (!colab) return next(errorHandler(404, 'Colaborador não encontrado'));
+
+    const pdf = colab.pdfFiles.id(pdfID);
+    if (!pdf) return next(errorHandler(404, 'PDF não encontrado'));
+
+    const pdfPath = `uploads/${pdf.filename}`;
+    return res.status(200).download(pdfPath);
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao buscar PDF'));
+  }
+};
+
+const deletePdfById = async (req, res, next) => {
+  const { colabId, pdfID } = req.params;
+
+  try {
+    const colab = await Colab.findById(colabId);
+    if (!colab) return next(errorHandler(404, 'Colaborador não encontrado'));
+    const pdf = colab.pdfFiles.id(pdfID);
+    if (!pdf) return next(errorHandler(404, 'PDF não encontrado'));
+    const pdfFile = pdf.filename;
+    pdf.deleteOne();
+    const filePath = `uploads/${pdfFile}`;
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+    await colab.save();
+    return res.status(200).json({ message: 'PDF excluído com sucesso' });
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao excluir PDF'));
+  }
+};
+
 module.exports = {
   uploadPdf,
-  getPdfs
+  getPdfs,
+  getPdfById,
+  deletePdfById
 };
