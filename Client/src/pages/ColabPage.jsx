@@ -12,6 +12,7 @@ export default function ColabPage() {
   const { colabId } = useParams();
   const dispatch = useDispatch();
   const [pdfFile, setPdfFile] = useState(null);
+  const [pdfs, setPdfs] = useState([]);
   const [expirationDate, setExpirationDate] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
 
@@ -28,6 +29,19 @@ export default function ColabPage() {
     };
     fetchColabs();
   }, [dispatch, colabId]);
+
+  useEffect(() => {
+    const fetchPdf = async () => {
+      try {
+        const res = await fetch(`/api/colabs/${colabId}/pdf-files`);
+        const data = await res.json();
+        setPdfs(data.pdfs);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchPdf();
+  },[dispatch, colabId]);
 
   const handleFileChange = (e) => {
     setPdfFile(e.target.files[0]);
@@ -54,6 +68,8 @@ export default function ColabPage() {
         body: formData,
       });
       if (res.ok) {
+        const newPdf = await res.json();
+        setPdfs([...pdfs, newPdf]);
         setUploadStatus('Arquivo enviado com sucesso!');
         setPdfFile(null);
         setExpirationDate('');
@@ -128,6 +144,25 @@ export default function ColabPage() {
             <p className="text-center text-gray-500">Carregando...</p>
           )}
         </form>
+        <div>
+        {pdfs.length > 0 ? (
+            <div className="mt-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                Arquivos PDF
+              </h2>
+              <ul className="space-y-4">
+                {pdfs.map((pdf) => (
+                  <li key={pdf.filename} className="flex justify-between">
+                    <span className="text-gray-800">{pdf.filename}</span>
+                    <span className="text-gray-800">{new Date(pdf.expirationDate).toLocaleDateString()}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="text-center text-gray-500 mt-8">Nenhum arquivo PDF enviado.</p>
+          )}
+        </div>
       </div>
     </main>
   );
