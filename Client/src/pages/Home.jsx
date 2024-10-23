@@ -67,6 +67,11 @@ export default function Home() {
                   ))}
                 </select>
               </li>
+              <Link to='/documents'>
+                <li className="cursor-pointer text-white">
+                  GERENCIAR DOCUMENTOS
+                </li>
+              </Link>
               <Link to='/projetos'>
                 <li className="cursor-pointer text-white">
                   GERENCIAR PROJETOS
