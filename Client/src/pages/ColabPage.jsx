@@ -13,6 +13,7 @@ export default function ColabPage() {
   const dispatch = useDispatch();
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfs, setPdfs] = useState([]);
+  const [pdfName, setPdfName] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
 
@@ -51,6 +52,10 @@ export default function ColabPage() {
     setExpirationDate(e.target.value);
   };
 
+  const handleNameChange = (e) => {
+    setPdfName(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!pdfFile || !expirationDate) {
@@ -60,6 +65,7 @@ export default function ColabPage() {
 
     const formData = new FormData();
     formData.append('file', pdfFile);
+    formData.append('pdfName', pdfName);
     formData.append('expirationDate', expirationDate);
 
     try {
@@ -119,6 +125,18 @@ export default function ColabPage() {
 
               <div>
                 <label className="block text-gray-700 font-medium mb-2">
+                  Nome do documento:
+                </label>
+                <input
+                  type="text"
+                  value={pdfName} 
+                  onChange={handleNameChange}
+                  className="w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">
                   Data de Vencimento:
                 </label>
                 <input
@@ -151,9 +169,9 @@ export default function ColabPage() {
                 Documentos
               </h2>
               <ul className="space-y-4">
-                {pdfs.map((pdf) => (
-                  <li key={pdf._id} className="flex justify-between items-center">
-                    <p className="text-gray-800">Nome: {pdf.filename}</p>
+                {pdfs.map((pdf, index) => (
+                  <li key={index} className="flex justify-between items-center">
+                    <p className="text-gray-800">Nome: {pdf.pdfName}</p>
                     <p className="text-gray-600">Validade: {new Date(pdf.expirationDate).toLocaleDateString()}</p>
                   </li>
                 ))}

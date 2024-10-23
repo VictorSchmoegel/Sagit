@@ -8,7 +8,7 @@ if (!fs.existsSync('uploads')) {
 
 const uploadPdf = async (req, res, next) => {
   const { colabId } = req.params;
-  const { expirationDate } = req.body;
+  const { expirationDate, pdfName } = req.body;
 
   if (!req.file) return next(errorHandler(400, 'Nenhum arquivo enviado'));
 
@@ -20,6 +20,7 @@ const uploadPdf = async (req, res, next) => {
 
     colab.pdfFiles.push({
       filename: req.file.filename,
+      pdfName: pdfName || req.file.originalname,
       expirationDate: new Date(expirationDate)
     });
 
@@ -35,19 +36,17 @@ const getPdfs = async (req, res, next) => {
   const { colabId } = req.params;
 
   try {
-    // Buscar colaborador pelo ID
     const colab = await Colab.findById(colabId);
     if (!colab) return next(errorHandler(404, 'Colaborador não encontrado'));
 
-    // Verificar se o colaborador tem arquivos PDF
     if (colab.pdfFiles.length === 0) {
       return res.status(404).json({ message: 'Nenhum PDF encontrado para este colaborador' });
     }
 
-    // Retornar a lista de arquivos PDF e as datas de expiração
     const pdfs = colab.pdfFiles.map(file => {
       return {
         filename: file.filename,
+        pdfName: file.pdfName,
         expirationDate: file.expirationDate,
         url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`  // Criar URL de acesso ao PDF
       };
