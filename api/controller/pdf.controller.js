@@ -27,7 +27,7 @@ const uploadPdf = async (req, res, next) => {
     await colab.save();
     return res.status(200).json({ message: 'Arquivo enviado com sucesso' });
   } catch (error) {
-    console.error("Erro ao salvar PDF:", error); // Exibir o erro no console
+    console.error("Erro ao salvar PDF:", error);
     next(errorHandler(500, 'Erro ao salvar PDF no colaborador'));
   }
 };
@@ -97,9 +97,37 @@ const deletePdfById = async (req, res, next) => {
   }
 };
 
+const getAllPdfs = async (req, res, next) => {
+  try {
+    const colabs = await Colab.find();
+    if (colabs.length === 0) {
+      return res.status(404).json({ message: 'Nenhum PDF encontrado' });
+    }
+
+    let pdfs = [];
+    colabs.forEach(colab => {
+      pdfs = pdfs.concat(colab.pdfFiles.map(file => {
+        return {
+          colabId: colab._id,
+          _id: file._id,
+          filename: file.filename,
+          pdfName: file.pdfName,
+          expirationDate: file.expirationDate,
+          url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`
+        };
+      }));
+    });
+
+    return res.status(200).json({ pdfs });
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao buscar PDFs'));
+  }
+};
+
 module.exports = {
   uploadPdf,
   getPdfs,
   getPdfById,
-  deletePdfById
+  deletePdfById,
+  getAllPdfs
 };
