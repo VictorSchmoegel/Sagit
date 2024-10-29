@@ -9,6 +9,8 @@ const projectRoute = require('./api/routes/project.route');
 const colabRoute = require('./api/routes/colab.route');
 const fileRoute = require('./api/routes/pdf.route');
 const avatarRoute = require('./api/routes/avatar.route');
+const emailRoute = require('./api/routes/documents.route');
+require('./api/utils/emailScheduler');
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   console.log('Connected to MongoDB');
@@ -30,6 +32,7 @@ app.use('/api', projectRoute);
 app.use('/api', colabRoute);
 app.use('/api', fileRoute);
 app.use('/api', avatarRoute);
+app.use('/api', emailRoute);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use((err, req, res, next) => {
