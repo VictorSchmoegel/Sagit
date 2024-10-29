@@ -1,14 +1,17 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { useRef, } from "react";
+import { useRef, useState, } from "react";
 import {
   signOutStart,
   signOutSuccess,
   signOutFailure,
 } from "../redux/userSlice"
 
+import avatar from '../../../uploads/1730230254365-371864670.jpg'
+
 export default function Profile() {
   const { currentUser } = useSelector((state) => state.user)
+  const [successMessage, setSuccessMessage] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const fileRef = useRef(null)
@@ -28,9 +31,10 @@ export default function Profile() {
       });
       const data = await res.json();
       if (data.success === false) {
-        console.log(data.message);
+        setSuccessMessage(data.message);
         return;
       }
+      setSuccessMessage(data.message);
     } catch (error) {
       console.error("Error uploading avatar", error);
     }
@@ -57,9 +61,8 @@ export default function Profile() {
 
   return (
     <main className="max-w-lg mx-auto p-3">
-      <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+      <h1 className="text-3xl font-semibold text-center my-7">{currentUser.username}</h1>
       <form className='flex flex-col gap-4'>
-        <p>Username: {currentUser.username}</p>
         <input
           onChange={handleFileUpload}
           type='file'
@@ -69,14 +72,20 @@ export default function Profile() {
         />
         <img
           onClick={() => fileRef.current.click()}
-          src={currentUser.avatar}
+          src={`/uploads/${currentUser.avatar.url}`}
           alt='profile'
-          className='rounded-full h-24 w-24 object-cover mx-auto cursor-pointer'
+          className='rounded-full h-24 w-24 object-cover mx-auto cursor-pointer border-2 border-gray-300'
         />
+        {successMessage && <p className='text-green-500 text-center'>{successMessage}</p>}
         <p className='text-sm self-center'>
-
+          Configurações de perfil
         </p>
-        <button onClick={handleSignOut}>Sign Out</button>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleSignOut}
+        >
+          Desconectar
+        </button>
       </form>
     </main>
   )
