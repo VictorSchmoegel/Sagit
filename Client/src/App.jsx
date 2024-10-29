@@ -11,6 +11,7 @@ import Projetos from "./pages/Projetos";
 import ProjectPage from "./pages/ProjectPage";
 import ColabPage from "./pages/ColabPage";
 import Documents from "./pages/Documents";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/projects/:id" element={<ProjectPage />} />
         <Route path="/colabs/:colabId" element={<ColabPage />} />
         <Route path="/documents" element={<Documents />} />
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
       </Routes>
     </BrowserRouter>
   )

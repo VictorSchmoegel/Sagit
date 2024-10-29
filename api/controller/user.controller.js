@@ -21,6 +21,40 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const getUserById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+    res.status(200).json(user);
+  }
+  catch (error) {
+    next(errorHandler(500, 'Erro ao buscar usuário'));
+  }
+};
+
+const uploadAvatar = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+    if (req.file) {
+      user.avatar = req.file.path;
+      await user.save();
+      return res.status(200).json({ message: 'Avatar atualizado com sucesso', avatar: user.avatar });
+    }
+    res.status(400).json({ message: 'Nenhum arquivo enviado' });
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao fazer upload do avatar'));
+  }
+};
+
 module.exports = {
-  createUser
+  createUser,
+  getUserById,
+  uploadAvatar,
 };

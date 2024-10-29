@@ -15,8 +15,11 @@ const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
     if (
-      file.mimetype !== 'application/pdf') {
-      return cb(new Error('Only PDFs are allowed'));
+      file.mimetype !== 'application/pdf' &&
+      file.mimetype !== 'image/jpeg' &&
+      file.mimetype !== 'image/png'
+    ) {
+      return cb(new Error('Apenas arquivos PDF, JPEG e PNG são permitidos'));
     }
 
     cb(null, true);

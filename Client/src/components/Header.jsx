@@ -29,7 +29,7 @@ export default function Header() {
                 <li className="hover:underline cursor-pointer"></li>
               )}
             </Link>
-            <Link to=''>
+            <Link to='/profile'>
               {currentUser ? (
                 <img
                   className='rounded-full h-7 w-7 object-cover'
@@ -37,7 +37,7 @@ export default function Header() {
                   alt='avatar'
                 />
               ) : (
-                <li className='hover:underline cursor-pointer'></li>
+                <li className='hover:underline cursor-pointer'>Usuários</li>
               )}
             </Link>
           </ul>
