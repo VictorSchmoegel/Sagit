@@ -22,11 +22,11 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/users" element={<Users />} />
-        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-        <Route path="/projetos" element={<Projetos />} />
-        <Route path="/projects/:id" element={<ProjectPage />} />
-        <Route path="/colabs/:colabId" element={<ColabPage />} />
-        <Route path="/documents" element={<Documents />} />
+        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>}/>
+        <Route path="/projetos" element={<PrivateRoute><Projetos /></PrivateRoute>} />
+        <Route path="/projects/:id" element={<PrivateRoute><ProjectPage /></PrivateRoute>} />
+        <Route path="/colabs/:colabId" element={<PrivateRoute><ColabPage /></PrivateRoute>} />
+        <Route path="/documents" element={<PrivateRoute><Documents /></PrivateRoute>} />
         <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
       </Routes>
     </BrowserRouter>
