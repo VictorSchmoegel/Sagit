@@ -18,8 +18,8 @@ export default function Documents() {
         dispatch(fetchPdfStart())
         const res = await fetch('/api/pdfs')
         const data = await res.json()
-        console.log(data)
-        setPdf(data.pdfs)
+        const sortedDocuments = data.pdfs.sort((a, b) => new Date(a.expirationDate) - new Date(b.expirationDate))
+        setPdf(sortedDocuments)
         dispatch(fetchPdfSuccess(data))
       } catch (error) {
         console.error(error)
