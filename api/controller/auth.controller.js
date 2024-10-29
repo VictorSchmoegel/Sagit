@@ -23,6 +23,15 @@ const signIn = async (req, res, next) => {
   }
 };
 
+const signOut = async (req, res, next) => {
+  try {
+    res.clearCookie('token').status(200).json({ message: 'Deslogado com sucesso' });
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao deslogar'));
+  }
+};
+
 module.exports = {
-  signIn
+  signIn,
+  signOut
 };
