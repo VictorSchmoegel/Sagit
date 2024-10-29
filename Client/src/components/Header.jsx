@@ -1,7 +1,10 @@
 import logo from '../assets/sagit_logo_red.png'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function Header() {
+  const { currentUser } = useSelector(state => state.user)
+
   return (
     <header className="bg-slate-200 shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
@@ -20,7 +23,22 @@ export default function Header() {
               <li className="hover:underline cursor-pointer">Sobre</li>
             </Link>
             <Link to='Users'>
-              <li className="hover:underline cursor-pointer">Usuários</li>
+              {currentUser ? (
+                <li className="hidden">Usuários</li>
+              ) : (
+                <li className="hover:underline cursor-pointer"></li>
+              )}
+            </Link>
+            <Link to=''>
+              {currentUser ? (
+                <img
+                  className='rounded-full h-7 w-7 object-cover'
+                  src={currentUser.avatar}
+                  alt='avatar'
+                />
+              ) : (
+                <li className='hover:underline cursor-pointer'></li>
+              )}
             </Link>
           </ul>
         </form>
