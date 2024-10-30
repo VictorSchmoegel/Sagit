@@ -50,6 +50,7 @@ export default function ColabPage() {
         const res = await fetch(`/api/colabs/${colabId}/pdf-files`);
         const data = await res.json();
         setPdfs(data.pdfs);
+        console.log(data.pdfs);
       } catch (error) {
         console.error(error);
       }
@@ -279,9 +280,10 @@ export default function ColabPage() {
           <p className="text-center text-green-600 mt-4">{successMessage}</p>
         )}
         <div>
-          {pdfs.map((pdf) => (
-            <div
-              key={pdf._id}
+          {pdfs && pdfs.length > 0 ? ( 
+            pdfs.map((pdf, index) => (
+              <div
+              key={index}
               className="flex justify-between items-center border-b border-gray-200 py-2"
             >
               <div>
@@ -307,7 +309,11 @@ export default function ColabPage() {
                 </button>
               </div>
             </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Nenhum PDF encontrado.</p>
+          )}
+
         </div>
       </div>
     </main>

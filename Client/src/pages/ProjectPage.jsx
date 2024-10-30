@@ -168,8 +168,8 @@ const ProjectPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {colabs.map((collaborator) => (
-                    <tr key={collaborator._id}>
+                  {colabs.map((collaborator, index) => (
+                    <tr key={index}>
                       <td className="px-4 py-2 border">{collaborator.name}</td>
                       <td className="px-4 py-2 border">{collaborator.cpf}</td>
                       <td className="px-4 py-2 border">{collaborator.rg}</td>
