@@ -152,11 +152,49 @@ const updatePdf = async (req, res, next) => {
   }
 };
 
+const getExpiredPdfs = async (req, res, next) => {
+  try {
+    const colabs = await Colab.find();
+    if (colabs.length === 0) {
+      return res.status(404).json({ message: 'Nenhum PDF encontrado' });
+    }
+
+    const today = new Date();
+    let expiredPdfs = [];
+
+    colabs.forEach(colab => {
+      expiredPdfs = expiredPdfs.concat(
+        colab.pdfFiles
+          .filter(file => new Date(file.expirationDate) < today)
+          .map(file => ({
+            colabName: colab.name,
+            colabId: colab._id,
+            _id: file._id,
+            filename: file.filename,
+            pdfName: file.pdfName,
+            expirationDate: file.expirationDate,
+            url: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`
+          }))
+      );
+    });
+
+    if (expiredPdfs.length === 0) {
+      return res.status(404).json({ message: 'Nenhum PDF expirado encontrado' });
+    }
+
+    return res.status(200).json({ expiredPdfs });
+  } catch (error) {
+    console.error('Erro ao buscar PDFs expirados:', error);
+    next(errorHandler(500, 'Erro ao buscar PDFs expirados'));
+  }
+};
+
 module.exports = {
   uploadPdf,
   getPdfs,
   getPdfById,
   deletePdfById,
   getAllPdfs,
-  updatePdf
+  updatePdf,
+  getExpiredPdfs
 };
