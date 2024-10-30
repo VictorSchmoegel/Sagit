@@ -92,31 +92,33 @@ export default function Home() {
                     <th className="px-4 py-2 border">DESMOBILIZAR</th>
                   </tr>
                 </thead>
-                {Array.isArray(colabs) && colabs.length > 0 ? (
-                  colabs.map((colab) => (
-                    <tr key={colab._id}>
-                      <td className="px-4 py-2 border text-start">{colab.name}</td>
-                      <td className="px-4 py-2 border text-center">{colab.cpf}</td>
-                      <td className="px-4 py-2 border text-center">{colab.rg}</td>
-                      <td className="px-4 py-2 border text-center">
-                        <Link to={`/colabs/${colab._id}`}>
-                          <button className="bg-blue-500 text-white px-3 py-2 rounded">
-                            Visualizar
+                <tbody>
+                  {Array.isArray(colabs) && colabs.length > 0 ? (
+                    colabs.map((colab) => (
+                      <tr key={colab._id}>
+                        <td className="px-4 py-2 border text-start">{colab.name}</td>
+                        <td className="px-4 py-2 border text-center">{colab.cpf}</td>
+                        <td className="px-4 py-2 border text-center">{colab.rg}</td>
+                        <td className="px-4 py-2 border text-center">
+                          <Link to={`/colabs/${colab._id}`}>
+                            <button className="bg-blue-500 text-white px-3 py-2 rounded">
+                              Visualizar
+                            </button>
+                          </Link>
+                        </td>
+                        <td className="px-4 py-2 border text-center">
+                          <button className="bg-red-500 text-white px-3 py-2 rounded">
+                            Desmobilizar
                           </button>
-                        </Link>
-                      </td>
-                      <td className="px-4 py-2 border text-center">
-                        <button className="bg-red-500 text-white px-3 py-2 rounded">
-                          Desmobilizar
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <div>
-                    <p colSpan="5" className="text-center px-4 py-2 border">Nenhum colaborador encontrado</p>
-                  </div>
-                )}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <div>
+                      <p colSpan="5" className="text-center px-4 py-2 border">Nenhum colaborador encontrado</p>
+                    </div>
+                  )}
+                </tbody>
               </table>
             </div>
           </section>
