@@ -21,6 +21,8 @@ export default function ColabPage() {
   const dispatch = useDispatch();
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfs, setPdfs] = useState([]);
+  const [expiredPdfs, setExpiredPdfs] = useState([]);
+  const [validPdf, setValidPdf] = useState([]);
   const [pdfName, setPdfName] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
@@ -49,8 +51,11 @@ export default function ColabPage() {
       try {
         const res = await fetch(`/api/colabs/${colabId}/pdf-files`);
         const data = await res.json();
-        setPdfs(data.pdfs);
-        console.log(data.pdfs);
+        const currentDate = new Date();
+        const expired = data.pdfs.filter((pdf) => new Date(pdf.expirationDate) < currentDate);
+        const valid = data.pdfs.filter((pdf) => new Date(pdf.expirationDate) >= currentDate);
+        setExpiredPdfs(expired);
+        setValidPdf(valid);
       } catch (error) {
         console.error(error);
       }
@@ -236,7 +241,7 @@ export default function ColabPage() {
                   </div>
                 </div>
               )}
-              
+
               <div>
                 <label className="block text-gray-700 font-medium mb-2">
                   Nome do documento:
@@ -279,41 +284,82 @@ export default function ColabPage() {
         {successMessage && (
           <p className="text-center text-green-600 mt-4">{successMessage}</p>
         )}
+
+        {/* Lista de PDFs */}
         <div>
-          {pdfs && pdfs.length > 0 ? ( 
-            pdfs.map((pdf, index) => (
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center pt-3">
+            Documentação
+          </h2>
+          {validPdf && validPdf.length > 0 ? (
+            validPdf.map((pdf, index) => (
               <div
-              key={index}
-              className="flex justify-between items-center border-b border-gray-200 py-2"
-            >
-              <div>
-                <p className="text-gray-800">Doc: {pdf.pdfName}</p>
-                <p className="text-gray-600 text-sm">
-                  Vencimento: {
-                    new Date(pdf.expirationDate).toLocaleDateString('pt-BR')
-                  }
-                </p>
+                key={index}
+                className="flex justify-between items-center border-b border-gray-200 py-2"
+              >
+                <div>
+                  <p className="text-gray-800">Doc: {pdf.pdfName}</p>
+                  <p className="text-gray-600 text-sm">
+                    Vencimento: {
+                      new Date(pdf.expirationDate).toLocaleDateString('pt-BR')
+                    }
+                  </p>
+                </div>
+                <div>
+                  <button
+                    onClick={() => handleEditClick(pdf)}
+                    className="text-blue-600 hover:text-blue-700 mr-2"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleRemovePdf(pdf._id)}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    Remover
+                  </button>
+                </div>
               </div>
-              <div>
-                <button
-                  onClick={() => handleEditClick(pdf)}
-                  className="text-blue-600 hover:text-blue-700 mr-2"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => handleRemovePdf(pdf._id)}
-                  className="text-red-600 hover:text-red-700"
-                >
-                  Remover
-                </button>
-              </div>
-            </div>
             ))
           ) : (
             <p className="text-center text-gray-500">Nenhum PDF encontrado.</p>
           )}
-
+        </div>
+        {/* Lista de PDFs Vencidos */}
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center pt-3">
+            Documentação vencida
+          </h2>
+          {expiredPdfs && expiredPdfs.length > 0 ? (
+            expiredPdfs.map((pdf, index) => (
+              <div
+                key={index}
+                className="flex justify-between border-b border-gray-200 py-2"
+              >
+                <div>
+                  <p className="text-gray-800">Doc: {pdf.pdfName}</p>
+                  <p className="text-gray-600 text-sm">
+                    Vencimento: {new Date(pdf.expirationDate).toLocaleDateString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <button
+                    onClick={() => handleEditClick(pdf)}
+                    className="text-blue-600 hover:text-blue-700 mr-2"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleRemovePdf(pdf._id)}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    Remover
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Nenhum PDF vencido encontrado.</p>
+          )}
         </div>
       </div>
     </main>
