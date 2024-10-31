@@ -35,19 +35,19 @@ export default function Documents() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex flex-col itens-center text-center py-10">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Documentos</h1>
+    <main className="min-h-screen bg-gray-100 flex flex-col items-center text-center py-10">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Documentos</h1>
       <div className="w-full max-w-lg mx-auto bg-white rounded-lg shadow-md p-8">
-        {pdfs ? (
-          <ul className="flex flex-col justify-around gap-4">
+        {pdfs.length > 0 ? (
+          <ul className="flex flex-col gap-4">
             {pdfs.map((doc, index) => (
-              <div key={index} className="flex items-center gap-4 border rounded-lg">
-                <div className="flex flex-col text-start p-3">
-                  <li className="font-bold text-lg">Nome: {doc.colabName}</li>
-                  <li>Documento: {doc.pdfName}</li>
-                  <li>Validade: {new Date(doc.expirationDate).toLocaleDateString()}</li>
+              <li key={index} className="flex items-center gap-4 p-4 border rounded-lg">
+                <div className="flex flex-col text-start">
+                  <p className="font-bold text-lg">Nome: {doc.colabName}</p>
+                  <p>Documento: {doc.pdfName}</p>
+                  <p>Validade: {new Date(doc.expirationDate).toLocaleDateString()}</p>
                 </div>
-                <div className="mx-auto">
+                <div className="ml-auto">
                   <button
                     onClick={() => handleViewCollaborator(doc.colabId)}
                     className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg"
@@ -55,7 +55,7 @@ export default function Documents() {
                     Visualizar
                   </button>
                 </div>
-              </div>
+              </li>
             ))}
           </ul>
         ) : (
