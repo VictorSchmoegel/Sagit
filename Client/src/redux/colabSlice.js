@@ -31,6 +31,20 @@ const colabsSlice = createSlice({
     createColabSuccess: (state, action) => {
       state.colabs.push(action.payload);
     },
+    updateColabStart: (state) => {
+      state.loading = true;
+    },
+    updateColabFailure: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
+    updateColabSuccess: (state, action) => {
+      if (Array.isArray(state.colabs)) {
+        state.colabs = state.colabs.map((colab) =>
+          colab.id === action.payload.id ? action.payload : colab
+        );
+      }
+    }
   }
 });
 
@@ -41,6 +55,9 @@ export const {
   createColabStart,
   createColabFailure,
   createColabSuccess,
+  updateColabStart,
+  updateColabFailure,
+  updateColabSuccess,
 } = colabsSlice.actions;
 
 export default colabsSlice.reducer;

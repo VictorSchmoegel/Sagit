@@ -9,6 +9,6 @@ router.get('/projects/:projectId/colabs', colabController.getColabsByProject);
 router.delete('/projects/:projectId/deleteColab/:colabId', colabController.deleteColab);
 router.get('/colabs', colabController.getAllColabs);
 router.get('/colabs/:colabId', colabController.getColabById);
-router.put('/colabs/:colabId', colabController.updateColab);
+router.put('/colabs/update/:colabId', colabController.updateColab);
 
 module.exports = router;

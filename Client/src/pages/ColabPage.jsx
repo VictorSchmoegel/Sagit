@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import UpdateColab from '../components/UpdateColab';
 import {
   fetchColabsStart,
   fetchColabsSuccess,
@@ -188,6 +189,8 @@ export default function ColabPage() {
                   <span className="text-gray-800">{colabs.rg}</span>
                 </div>
               </div>
+
+              <UpdateColab colabId={colabId} currentData={colabs} />
 
               {/* Upload de PDF */}
               <div>
