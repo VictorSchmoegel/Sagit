@@ -11,9 +11,6 @@ import {
   deletePdfStart,
   deletePdfSuccess,
   deletePdfFailure,
-  updatePdfStart,
-  updatePdfSuccess,
-  updatePdfFailure,
 } from '../redux/pdfSlice';
 
 export default function ColabPage() {
@@ -28,10 +25,6 @@ export default function ColabPage() {
   const [expirationDate, setExpirationDate] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editPdfId, setEditPdfId] = useState(null);
-  const [newPdfName, setNewPdfName] = useState('');
-  const [newExpirationDate, setNewExpirationDate] = useState('');
 
   useEffect(() => {
     const fetchColabs = async () => {
@@ -129,42 +122,6 @@ export default function ColabPage() {
     }
   };
 
-  const handleEditClick = (pdf) => {
-    setEditPdfId(pdf._id);
-    setNewPdfName(pdf.pdfName);
-    setNewExpirationDate(pdf.expirationDate);
-    setIsModalOpen(true);
-  };
-
-  const handleUpdatePdf = async () => {
-    dispatch(updatePdfStart());
-    try {
-      const res = await fetch(`/api/colabs/${colabId}/update/${editPdfId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          pdfName: newPdfName,
-          expirationDate: newExpirationDate,
-        }),
-      });
-      if (res.ok) {
-        const updatedPdf = await res.json();
-        setPdfs(pdfs.map((pdf) => (pdf._id === editPdfId ? updatedPdf : pdf)));
-        dispatch(updatePdfSuccess(updatedPdf));
-        setSuccessMessage('PDF atualizado com sucesso!');
-      } else {
-        dispatch(updatePdfFailure('Falha ao atualizar o PDF'));
-      }
-    } catch (error) {
-      dispatch(updatePdfFailure('Erro ao atualizar o PDF'));
-      console.error(error);
-    } finally {
-      setIsModalOpen(false);
-    }
-  };
-
   return (
     <main className="min-h-screen bg-gray-100 flex justify-center items-center py-10">
       <div className="w-full max-w-lg bg-white rounded-lg shadow-md p-8">
@@ -204,46 +161,6 @@ export default function ColabPage() {
                   className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 />
               </div>
-
-              {/*Modal */}
-              {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <div className="bg-white p-6 rounded-md shadow-lg w-96">
-                    <h2 className="text-xl font-semibold mb-4">
-                      Editar PDF
-                    </h2>
-                    <div className="space-y-4">
-                      <input
-                        type="text"
-                        value={newPdfName}
-                        onChange={(e) => setNewPdfName(e.target.value)}
-                        placeholder="Novo nome do PDF"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                      <input
-                        type="date"
-                        value={newExpirationDate}
-                        onChange={(e) => setNewExpirationDate(e.target.value)}
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div className="flex justify-end mt-4">
-                      <button
-                        onClick={() => setIsModalOpen(false)}
-                        className="bg-gray-400 text-white px-4 py-2 rounded-md mr-2"
-                      >
-                        Cancelar
-                      </button>
-                      <button
-                        onClick={handleUpdatePdf}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                      >
-                        Concluir
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               <div>
                 <label className="block text-gray-700 font-medium mb-2">
@@ -307,20 +224,12 @@ export default function ColabPage() {
                     }
                   </p>
                 </div>
-                <div>
-                  <button
-                    onClick={() => handleEditClick(pdf)}
-                    className="text-blue-600 hover:text-blue-700 mr-2"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleRemovePdf(pdf._id)}
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    Remover
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleRemovePdf(pdf._id)}
+                  className="text-red-600 hover:text-red-700"
+                >
+                  Remover
+                </button>
               </div>
             ))
           ) : (
@@ -332,32 +241,26 @@ export default function ColabPage() {
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center pt-3">
             Documentação vencida
           </h2>
-          {expiredPdfs && expiredPdfs.length > 0 ? (
+          {expiredPdfs.length > 0 ? (
             expiredPdfs.map((pdf, index) => (
               <div
                 key={index}
-                className="flex justify-between border-b border-gray-200 py-2"
+                className="flex justify-between items-center border-b border-gray-200 py-2"
               >
                 <div>
                   <p className="text-gray-800">Doc: {pdf.pdfName}</p>
                   <p className="text-gray-600 text-sm">
-                    Vencimento: {new Date(pdf.expirationDate).toLocaleDateString('pt-BR')}
+                    Vencimento: {
+                      new Date(pdf.expirationDate).toLocaleDateString('pt-BR')
+                    }
                   </p>
                 </div>
-                <div>
-                  <button
-                    onClick={() => handleEditClick(pdf)}
-                    className="text-blue-600 hover:text-blue-700 mr-2"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleRemovePdf(pdf._id)}
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    Remover
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleRemovePdf(pdf._id)}
+                  className="text-red-600 hover:text-red-700"
+                >
+                  Remover
+                </button>
               </div>
             ))
           ) : (
