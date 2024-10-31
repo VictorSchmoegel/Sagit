@@ -71,10 +71,29 @@ const getColabById = async (req, res, next) => {
   }
 };
 
+const updateColab = async (req, res, next) => {
+  const { colabId } = req.params;
+  const { name, cpf, rg } = req.body;
+  try {
+    const colab = await Colab.findById(colabId);
+    if (!colab) return next(errorHandler(404, 'Colaborador não encontrado'));
+    if (cpf.length < 11) return next(errorHandler(400, 'CPF inválido'));
+    if (rg.length < 5) return next(errorHandler(400, 'RG inválido'));
+    colab.name = name;
+    colab.cpf = cpf;
+    colab.rg = rg;
+    await colab.save();
+    return res.status(200).json({ message: 'Colaborador atualizado com sucesso' });
+  } catch (error) {
+    next(errorHandler(500, 'Erro ao atualizar colaborador'));
+  }
+};
+
 module.exports = {
   createColab,
   getColabsByProject,
   deleteColab,
   getAllColabs,
   getColabById,
+  updateColab,
 };
